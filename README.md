@@ -23,7 +23,7 @@ It allows users to track income and expenses, view transaction history by month 
 
 ## 🖥️ Live Demo
 
-👉 **https://spendly.github.io**
+👉 **https://itspavannk.github.io/spendly.github.io/**
 
 ---
 
@@ -51,6 +51,4 @@ It allows users to track income and expenses, view transaction history by month 
 - **GitHub Pages**
 
 ---
-
-## 📂 Project Structure
 
