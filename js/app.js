@@ -411,7 +411,11 @@ document.getElementById("startAppBtn").addEventListener("click", () => {
   const name = nameInput.value.trim();
   const openingBalance = Number(balanceInput.value);
 
-  if (!name) return;
+if (!name) {
+  alert("Please enter your name");
+  return;
+}
+
 
   localStorage.setItem("spendly_username", name);
 
@@ -451,8 +455,13 @@ if (!isNaN(openingBalance) && openingBalance > 0) {
 
 document.getElementById("editNameBtn").addEventListener("click", () => {
   localStorage.removeItem("spendly_username");
-  location.reload();
+
+  // force name-only edit mode
+  document.getElementById("openingBalance").style.display = "none";
+
+  modal.classList.remove("hidden");
 });
+
 
 /* ================= CLEAR ALL TRANSACTIONS ================= */
 
