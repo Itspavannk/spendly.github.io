@@ -381,16 +381,30 @@ const modal = document.getElementById("nameModal");
 
 function loadUser() {
   const name = localStorage.getItem("spendly_username");
+  const onboarded = localStorage.getItem("spendly_onboarded");
+  const balanceInput = document.getElementById("openingBalance");
 
-  if (!name) {
+  if (!name && !onboarded) {
+    // First-time onboarding
+    balanceInput.style.display = "block";
     modal.classList.remove("hidden");
-  } else {
+  } 
+  else if (!name && onboarded) {
+    // Editing name only
+    balanceInput.style.display = "none";
+    modal.classList.remove("hidden");
+  } 
+  else {
+    // Normal app usage
     document.getElementById("homeGreeting").textContent = `Hi, ${name} 👋`;
     document.getElementById("userGreeting").textContent = `Hi, ${name} 👋`;
   }
 }
 
+
 document.getElementById("startAppBtn").addEventListener("click", () => {
+  document.getElementById("openingBalance").style.display = "block";
+
   const nameInput = document.getElementById("firstUserName");
   const balanceInput = document.getElementById("openingBalance");
 
@@ -428,6 +442,9 @@ if (!isNaN(openingBalance) && openingBalance > 0) {
   updateHome();
   renderRecent();
   renderHistory();
+
+  localStorage.setItem("spendly_onboarded", "true");
+
   loadUser();
 });
 
