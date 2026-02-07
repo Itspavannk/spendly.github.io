@@ -57,7 +57,7 @@ body {
   background-image: var(--bg-gradient);
   color: var(--text);
   margin: 0;
-  height: 100vh;
+  height: var(--app-height);
   overflow: hidden;
 }
 
@@ -84,13 +84,14 @@ body::before {
 /* ================= APP LAYOUT ================= */
 
 .app {
+  height: var(--app-height);
   max-width: 420px;
   margin: auto;
-  height: 100vh;      
   display: flex;
   flex-direction: column;
-  overflow: hidden;       
+  overflow: hidden;
 }
+
 
 
 .app-header {

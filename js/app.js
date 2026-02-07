@@ -8,6 +8,20 @@ function saveTransactions(data) {
   localStorage.setItem("spendly_transactions", JSON.stringify(data));
 }
 
+
+/* ================= FIX MOBILE VIEWPORT HEIGHT ================= */
+
+function setAppHeight() {
+  document.documentElement.style.setProperty(
+    "--app-height",
+    `${window.innerHeight}px`
+  );
+}
+
+window.addEventListener("resize", setAppHeight);
+setAppHeight();
+
+
 /* ================= NAVIGATION ================= */
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
