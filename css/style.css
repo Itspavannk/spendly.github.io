@@ -1047,4 +1047,19 @@ button:active {
   transform: translateY(0);
 }
 
+.share-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--accent, #2563eb);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
+.share-btn:active {
+  transform: scale(0.97);
+}

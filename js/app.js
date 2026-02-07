@@ -486,6 +486,19 @@ document.getElementById("resetAppBtn").addEventListener("click", () => {
   location.reload();
 });
 
+//share app//
+document.getElementById("shareAppBtn").addEventListener("click", () => {
+  if (navigator.share) {
+    navigator.share({
+      title: "Spendly",
+      text: "Track your income and expenses with Spendly",
+      url: "https://itspavannk.github.io/spendly.github.io/"
+    });
+  } else {
+    alert("Share this link:\nhttps://itspavannk.github.io/spendly.github.io/");
+  }
+});
+
 
 /* ================= CLEAR ALL TRANSACTIONS ================= */
 
