@@ -392,14 +392,24 @@ function loadUser() {
 
 document.getElementById("startAppBtn").addEventListener("click", () => {
   const nameInput = document.getElementById("firstUserName");
+  const balanceInput = document.getElementById("openingBalance");
+
   const name = nameInput.value.trim();
-  
+  const openingBalance = Number(balanceInput.value);
+
   if (!name) return;
 
   localStorage.setItem("spendly_username", name);
+
+  // Step 2: just store opening balance (no logic yet)
+  if (!isNaN(openingBalance) && openingBalance > 0) {
+    localStorage.setItem("spendly_opening_balance", openingBalance);
+  }
+
   modal.classList.add("hidden");
   loadUser();
 });
+
 
 document.getElementById("editNameBtn").addEventListener("click", () => {
   localStorage.removeItem("spendly_username");
