@@ -1,3 +1,7 @@
+let nameEditMode = false;
+let isEditingName = false;
+
+
 /* ================= STORAGE HELPERS ================= */
 
 function getTransactions() {
@@ -401,66 +405,69 @@ function loadUser() {
   }
 }
 
-
 document.getElementById("startAppBtn").addEventListener("click", () => {
-  document.getElementById("openingBalance").style.display = "block";
-
   const nameInput = document.getElementById("firstUserName");
   const balanceInput = document.getElementById("openingBalance");
 
   const name = nameInput.value.trim();
   const openingBalance = Number(balanceInput.value);
 
-if (!name) {
-  alert("Please enter your name");
-  return;
-}
-
+  if (!name) {
+    alert("Please enter your name");
+    return;
+  }
 
   localStorage.setItem("spendly_username", name);
 
-if (!isNaN(openingBalance) && openingBalance > 0) {
-  const existing = getTransactions();
+  // 🔐 Only create opening balance during first onboarding
+  if (!nameEditMode && !isNaN(openingBalance) && openingBalance > 0) {
+    const existing = getTransactions();
 
-  if (existing.length === 0) {
-    const today = new Date().toISOString().slice(0, 10);
+    if (existing.length === 0) {
+      const today = new Date().toISOString().slice(0, 10);
 
-    const openingTx = {
-      id: Date.now(),
-      type: "income",
-      category: "Opening Balance",
-      amount: openingBalance,
-      date: today,
-      note: "Initial balance"
-    };
+      existing.push({
+        id: Date.now(),
+        type: "income",
+        category: "Opening Balance",
+        amount: openingBalance,
+        date: today,
+        note: "Initial balance"
+      });
 
-    existing.push(openingTx);
-    saveTransactions(existing);
+      saveTransactions(existing);
+      localStorage.setItem("spendly_onboarded", "true");
+    }
   }
-}
 
+  // 🔁 reset mode AFTER success
+  nameEditMode = false;
+
+  // restore balance input for future onboarding only
+  document.getElementById("openingBalance").style.display = "block";
 
   modal.classList.add("hidden");
 
-    populateMonths();
+  populateMonths();
   updateHome();
   renderRecent();
   renderHistory();
-
-  localStorage.setItem("spendly_onboarded", "true");
-
   loadUser();
 });
 
 
+
 document.getElementById("editNameBtn").addEventListener("click", () => {
+  nameEditMode = true;
+
   localStorage.removeItem("spendly_username");
 
-  // force name-only edit mode
+  // Hide opening balance for edit-name mode
   document.getElementById("openingBalance").style.display = "none";
 
   modal.classList.remove("hidden");
 });
+
 
 // Reset app //
 document.getElementById("resetAppBtn").addEventListener("click", () => {
