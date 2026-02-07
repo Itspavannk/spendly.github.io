@@ -423,6 +423,11 @@ if (!isNaN(openingBalance) && openingBalance > 0) {
 
 
   modal.classList.add("hidden");
+
+    populateMonths();
+  updateHome();
+  renderRecent();
+  renderHistory();
   loadUser();
 });
 
