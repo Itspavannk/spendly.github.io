@@ -1046,3 +1046,24 @@ button:active {
   opacity: 1;
   transform: translateY(0);
 }
+
+.danger-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #dc2626; /* red */
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.danger-btn:hover {
+  background: #b91c1c;
+}
+
+.danger-btn:active {
+  transform: scale(0.97);
+}

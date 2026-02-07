@@ -462,6 +462,23 @@ document.getElementById("editNameBtn").addEventListener("click", () => {
   modal.classList.remove("hidden");
 });
 
+// Reset app //
+document.getElementById("resetAppBtn").addEventListener("click", () => {
+  const confirmReset = confirm(
+    "This will delete all your data and restart the app.\n\nThis action cannot be undone.\n\nDo you want to continue?"
+  );
+
+  if (!confirmReset) return;
+
+  // Clear all app-related data
+  localStorage.removeItem("spendly_username");
+  localStorage.removeItem("spendly_transactions");
+  localStorage.removeItem("spendly_onboarded");
+
+  // Reload app → fresh onboarding
+  location.reload();
+});
+
 
 /* ================= CLEAR ALL TRANSACTIONS ================= */
 
