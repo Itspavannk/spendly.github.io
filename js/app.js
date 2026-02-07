@@ -401,10 +401,26 @@ document.getElementById("startAppBtn").addEventListener("click", () => {
 
   localStorage.setItem("spendly_username", name);
 
-  // Step 2: just store opening balance (no logic yet)
-  if (!isNaN(openingBalance) && openingBalance > 0) {
-    localStorage.setItem("spendly_opening_balance", openingBalance);
+if (!isNaN(openingBalance) && openingBalance > 0) {
+  const existing = getTransactions();
+
+  if (existing.length === 0) {
+    const today = new Date().toISOString().slice(0, 10);
+
+    const openingTx = {
+      id: Date.now(),
+      type: "income",
+      category: "Opening Balance",
+      amount: openingBalance,
+      date: today,
+      note: "Initial balance"
+    };
+
+    existing.push(openingTx);
+    saveTransactions(existing);
   }
+}
+
 
   modal.classList.add("hidden");
   loadUser();
