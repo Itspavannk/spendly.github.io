@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spendly • Track. Save. Grow.</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10b981">
-
 </head>
 
 <body data-theme="dark">
@@ -68,7 +65,11 @@
           <button type="button" class="cat" data-cat="Others">📦</button>
         </div>
 
-        <input type="date" />
+        <div class="date-input-wrapper">
+          <label class="date-label" for="transactionDate">Select Date (Optional)</label>
+          <input type="date" id="transactionDate" />
+        </div>
+        
         <input type="text" placeholder="Note (optional)" />
 
         <button type="submit" class="save-btn sticky-save">Save</button>
