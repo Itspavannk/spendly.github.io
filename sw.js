@@ -6,8 +6,9 @@ const ASSETS = [
   "./manifest.json",
   "./css/style.css",
   "./js/app.js",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png"
+   "./assets/icons/icon-512.png",
+  "./assets/icons/icon-192.png"
+ 
 ];
 
 // Install
