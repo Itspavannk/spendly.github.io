@@ -97,7 +97,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 20px;
+  padding: 16px 20px;
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid var(--card-border);
@@ -105,7 +105,7 @@ body::before {
 
 .app-header h1 {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 800;
   background: linear-gradient(135deg, #10b981 0%, #fbbf24 100%);
   -webkit-background-clip: text;
@@ -177,12 +177,12 @@ body::before {
 
 .home-hero {
   text-align: center;
-  margin-top: 32px;
-  padding: 40px 24px;
+  margin-top: 16px;
+  padding: 24px 20px;
   background: var(--card);
   backdrop-filter: blur(20px);
   border: 1px solid var(--card-border);
-  border-radius: 32px;
+  border-radius: 24px;
   position: relative;
   overflow: hidden;
   animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -227,9 +227,9 @@ body::before {
 
 .home-balance {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 600;
-  margin: 16px 0;
+  margin: 12px 0;
   color: var(--text);
   position: relative;
   z-index: 1;
@@ -247,14 +247,14 @@ body::before {
 }
 
 .primary-btn {
-  margin-top: 32px;
+  margin-top: 20px;
   width: 100%;
-  padding: 18px;
+  padding: 14px;
   border-radius: 16px;
   border: none;
   background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   position: relative;
@@ -292,14 +292,16 @@ body::before {
 }
 
 .home-section {
-  margin-top: 40px;
+  margin-top: 20px;
   animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+  flex: 1;
+  overflow: hidden;
 }
 
 .home-section h4 {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.5px;
@@ -340,12 +342,12 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  margin-bottom: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
   background: var(--card);
   backdrop-filter: blur(20px);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
+  border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
   max-width: 100%;
@@ -600,11 +602,14 @@ body::before {
   font-weight: 500;
   pointer-events: none;
   transition: all 0.3s;
+  z-index: 1;
 }
 
-.date-input-wrapper input[type="date"]:focus + .date-label,
-.date-input-wrapper input[type="date"]:valid + .date-label {
+.date-input-wrapper input[type="date"]:focus ~ .date-label,
+.date-input-wrapper input[type="date"]:valid ~ .date-label,
+.date-input-wrapper input[type="date"]:not([value=""]) ~ .date-label {
   opacity: 0;
+  visibility: hidden;
 }
 
 .date-input-wrapper::after {
@@ -615,6 +620,7 @@ body::before {
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 18px;
+  z-index: 2;
 }
 
 /* Custom calendar styles for dark theme */
