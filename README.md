@@ -1,5 +1,5 @@
 # Spendly 💸
-https://spendly.github.io
+https://itspavannk.github.io/spendly.github.io/
 
 Spendly is a modern **expense-tracking Progressive Web App (PWA)** built using **HTML, CSS, and JavaScript**.  
 It allows users to track income and expenses, view transaction history by month or all time, and manage finances through a clean, app-like interface.
