@@ -349,10 +349,9 @@ function transactionItem(t) {
   return `
     <li class="transaction ${t.type}">
       <div class="left">
-        <span class="cat-name">${t.category}</span>
-        <small class="tx-date">${formatDate(t.date)}</small>
+        <span class="category">${t.category}</span>
+        ${t.note ? `<small class="note">${t.note}</small>` : ""}
       </div>
-
       <div class="right">
         <strong>${sign} ₹${t.amount}</strong>
         <button class="delete-btn" onclick="deleteTx(${t.id})">🗑️</button>
@@ -360,6 +359,7 @@ function transactionItem(t) {
     </li>
   `;
 }
+
 
 
 /* ================= DELETE TRANSACTION ================= */
@@ -419,7 +419,7 @@ document.getElementById("startAppBtn").addEventListener("click", () => {
 
   localStorage.setItem("spendly_username", name);
 
-  // 🔐 Only create opening balance during first onboarding
+  // Only create opening balance during first onboarding
   if (!nameEditMode && !isNaN(openingBalance) && openingBalance > 0) {
     const existing = getTransactions();
 

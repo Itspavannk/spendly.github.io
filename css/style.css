@@ -411,6 +411,12 @@ body::before {
   overflow: hidden;
 }
 
+.transaction .note {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
 .tx-date {
   font-size: 12px;
   color: var(--text-dim);
