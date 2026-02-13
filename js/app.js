@@ -3,6 +3,8 @@ const BASE_URL =
     ? "http://localhost:5000"
     : "https://spendly-github-io.onrender.com";
 
+    let transactions = [];
+
 
 
 let nameEditMode = false;
@@ -124,27 +126,27 @@ if (window.location.pathname.includes("dashboard.html")) {
 
 /* ================= STORAGE HELPERS ================= */
 
-async function getTransactions() {
+async function getTransactions(force = false) {
+  if (transactions.length > 0 && !force) {
+    return transactions;
+  }
+
   const token = localStorage.getItem("token");
 
-  try {
-   const res = await fetch(`${BASE_URL}/api/expenses`, {
-
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch transactions");
+  const res = await fetch(`${BASE_URL}/api/expenses`, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
+  });
 
-    return await res.json();
-  } catch (err) {
-    console.error("Error fetching transactions:", err);
-    return [];
+  if (!res.ok) {
+    throw new Error("Failed to fetch transactions");
   }
+
+  transactions = await res.json();
+  return transactions;
 }
+
 
 
 
@@ -226,7 +228,7 @@ function formatDate(dateStr) {
 addForm.onsubmit = async function (e) {
   e.preventDefault();
 
-  // 🔒 Prevent double submission
+
   if (this.dataset.saving === "true") return;
   this.dataset.saving = "true";
 
@@ -289,11 +291,15 @@ addForm.onsubmit = async function (e) {
       throw new Error("Failed to save transaction");
     }
 
-    selectedMonth = date.slice(0, 7);
+      const savedTx = await res.json();  
+      transactions.push(savedTx);     
 
-await renderRecent();
-await renderHistory();
-updateHome();
+      selectedMonth = date.slice(0, 7);
+
+      renderRecent();  
+      renderHistory(); 
+      updateHome();
+
 
 
     if (addMessage) {
@@ -390,8 +396,9 @@ document.querySelectorAll('input[name="historyMode"]').forEach(radio => {
 
 /* ================= HOME SCREEN - BALANCE UPDATE ================= */
 
-async function updateHome() {
-  const all = await getTransactions();
+function updateHome() {
+  const all = transactions;
+
 
   let income = 0;
   let expense = 0;
@@ -424,9 +431,10 @@ async function updateHome() {
 
 /* ================= RECENT TRANSACTIONS ================= */
 
-async function renderRecent() {
+function renderRecent() {
   const recentList = document.getElementById("recentList");
-  const all = await getTransactions();
+  const all = transactions;
+
 
   if (all.length === 0) {
     recentList.innerHTML = `<li class="empty">No transactions yet</li>`;
@@ -473,9 +481,10 @@ document.querySelectorAll(".cat").forEach(cat => {
 
 /* ================= HISTORY SCREEN ================= */
 
-async function renderHistory() {
+function renderHistory() {
   const historyList = document.getElementById("historyList");
-  const all = await getTransactions();
+  const all = transactions;
+
 
   historyList.innerHTML = "";
 
@@ -557,11 +566,12 @@ async function deleteTx(id) {
     }
 
     // After deleting, refresh data from DB
-    const transactions = await getTransactions();
+    transactions = transactions.filter(t => t._id !== id);
 
     if (transactions.length > 0) {
-      selectedMonth = transactions.slice(-1)[0].date.slice(0, 7);
+      selectedMonth = transactions[transactions.length - 1].date.slice(0, 7);
     }
+
 
     const addMessage = document.getElementById("addMessage");
 if (addMessage) {
@@ -573,8 +583,8 @@ if (addMessage) {
   }, 1500);
 }
 
-await renderRecent();
-await renderHistory();
+renderRecent();
+renderHistory();
 updateHome();
 
 
@@ -858,10 +868,11 @@ confirmClear.addEventListener("click", async () => {
 
     clearModal.classList.add("hidden");
 
-    await populateMonths();
-    await updateHome();
-    await renderRecent();
-    await renderHistory();
+    transactions = [];
+    renderRecent();
+    renderHistory();
+    updateHome();
+
 
   } catch (err) {
     const addMessage = document.getElementById("addMessage");
@@ -880,18 +891,18 @@ confirmClear.addEventListener("click", async () => {
 
 async function refreshUI() {
   await populateMonths();
-  await updateHome();
-  await renderRecent();
-  await renderHistory();
+  updateHome();
+  renderRecent();
+  renderHistory();
 }
 
 /* ================= INITIALIZATION ================= */
 
 async function init() {
   await populateMonths();
-  await updateHome();
-  await renderRecent();
-  await renderHistory();
+  updateHome();
+  renderRecent();
+  renderHistory();
   loadUser();
 }
 

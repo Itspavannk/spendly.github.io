@@ -12,7 +12,8 @@ router.post("/", authMiddleware, async (req, res) => {
   });
 
   await expense.save();
-  res.json({ message: "Transaction saved" });
+  res.json(expense);
+
 });
 
 // GET USER TRANSACTIONS
