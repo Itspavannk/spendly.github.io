@@ -38,7 +38,7 @@ if (loginForm) {
         document.body.style.opacity = "0";
 
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "index.html";
         }, 300);
 
       } else {
