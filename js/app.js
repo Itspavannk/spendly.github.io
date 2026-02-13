@@ -223,23 +223,26 @@ function formatDate(dateStr) {
 
 
 /* ================= ADD TRANSACTION FORM ================= */
-
-addForm.addEventListener("submit", async e => {
+addForm.onsubmit = async function (e) {
   e.preventDefault();
 
-  const saveBtn = addForm.querySelector("button");
+  // 🔒 Prevent double submission
+  if (this.dataset.saving === "true") return;
+  this.dataset.saving = "true";
+
+  const saveBtn = this.querySelector(".save-btn");
   saveBtn.disabled = true;
   saveBtn.textContent = "Saving...";
 
-  const amountInput = addForm.querySelector('input[type="number"]');
+  const amountInput = this.querySelector('input[type="number"]');
   const amount = Number(amountInput.value);
-  const dateInput = addForm.querySelector('input[type="date"]');
+  const dateInput = this.querySelector('input[type="date"]');
   const date = dateInput.value || new Date().toISOString().slice(0, 10);
-  const noteInput = addForm.querySelector('input[type="text"]');
+  const noteInput = this.querySelector('input[type="text"]');
   const note = noteInput.value;
-  const typeBtn = addForm.querySelector(".toggle-btn.active");
+  const typeBtn = this.querySelector(".toggle-btn.active");
   const type = typeBtn.textContent.toLowerCase();
-  const categoryBtn = addForm.querySelector(".cat.active");
+  const categoryBtn = this.querySelector(".cat.active");
   const category = categoryBtn.dataset.cat;
 
   const addMessage = document.getElementById("addMessage");
@@ -256,6 +259,7 @@ addForm.addEventListener("submit", async e => {
       amountInput.focus();
     }
 
+    this.dataset.saving = "false";
     saveBtn.disabled = false;
     saveBtn.textContent = "Save";
     return;
@@ -285,10 +289,8 @@ addForm.addEventListener("submit", async e => {
       throw new Error("Failed to save transaction");
     }
 
-    // Auto-switch history to transaction month
     selectedMonth = date.slice(0, 7);
 
-    // Refresh UI from DB
     await populateMonths();
     await updateHome();
     await renderRecent();
@@ -303,14 +305,12 @@ addForm.addEventListener("submit", async e => {
       if (addMessage) addMessage.textContent = "";
     }, 2000);
 
-    // Reset form
-    addForm.reset();
+    this.reset();
     document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
     document.querySelector(".toggle-btn.expense").classList.add("active");
     document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
     document.querySelector(".cat[data-cat='Food']").classList.add("active");
 
-    // Navigate back to home
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.querySelector('[data-target="home"]').classList.add("active");
@@ -325,10 +325,12 @@ addForm.addEventListener("submit", async e => {
     console.error(err);
 
   } finally {
+    this.dataset.saving = "false";
     saveBtn.disabled = false;
     saveBtn.textContent = "Save";
   }
-});
+};
+
 
 
 
