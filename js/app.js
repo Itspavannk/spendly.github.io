@@ -291,10 +291,10 @@ addForm.onsubmit = async function (e) {
 
     selectedMonth = date.slice(0, 7);
 
-    await populateMonths();
-    await updateHome();
-    await renderRecent();
-    await renderHistory();
+await renderRecent();
+await renderHistory();
+updateHome();
+
 
     if (addMessage) {
       addMessage.textContent = "Transaction added successfully!";
@@ -563,7 +563,6 @@ async function deleteTx(id) {
       selectedMonth = transactions.slice(-1)[0].date.slice(0, 7);
     }
 
-    await populateMonths();
     const addMessage = document.getElementById("addMessage");
 if (addMessage) {
   addMessage.textContent = "Transaction deleted.";
@@ -574,9 +573,10 @@ if (addMessage) {
   }, 1500);
 }
 
-    await updateHome();
-    await renderRecent();
-    await renderHistory();
+await renderRecent();
+await renderHistory();
+updateHome();
+
 
  } catch (err) {
   const addMessage = document.getElementById("addMessage");
