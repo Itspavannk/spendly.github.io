@@ -224,18 +224,12 @@ function formatDate(dateStr) {
 
 /* ================= ADD TRANSACTION FORM ================= */
 
-const addForm = document.getElementById("addForm");
-
-const amountField = addForm.querySelector('input[type="number"]');
-
-amountField.addEventListener("input", () => {
-  const addMessage = document.getElementById("addMessage");
-  if (addMessage) addMessage.textContent = "";
-  amountField.style.border = "";
-});
-
 addForm.addEventListener("submit", async e => {
   e.preventDefault();
+
+  const saveBtn = addForm.querySelector("button");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving...";
 
   const amountInput = addForm.querySelector('input[type="number"]');
   const amount = Number(amountInput.value);
@@ -248,22 +242,24 @@ addForm.addEventListener("submit", async e => {
   const categoryBtn = addForm.querySelector(".cat.active");
   const category = categoryBtn.dataset.cat;
 
-const addMessage = document.getElementById("addMessage");
+  const addMessage = document.getElementById("addMessage");
 
-if (!amount || !category) {
-  if (addMessage) {
-    addMessage.textContent = "Please enter amount and select a category";
-    addMessage.style.color = "#ef4444";
+  // Validation
+  if (!amount || !category) {
+    if (addMessage) {
+      addMessage.textContent = "Please enter amount and select a category";
+      addMessage.style.color = "#ef4444";
+    }
+
+    if (!amount) {
+      amountInput.style.border = "1px solid #ef4444";
+      amountInput.focus();
+    }
+
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save";
+    return;
   }
-
-  if (!amount) {
-    amountInput.style.border = "1px solid #ef4444";
-    amountInput.focus();
-  }
-
-  return;
-}
-
 
   const transaction = {
     amount,
@@ -277,7 +273,6 @@ if (!amount || !category) {
 
   try {
     const res = await fetch(`${BASE_URL}/api/expenses`, {
-
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -300,15 +295,13 @@ if (!amount || !category) {
     await renderHistory();
 
     if (addMessage) {
-  addMessage.textContent = "Transaction added successfully!";
-  addMessage.style.color = "#22c55e";
-}
+      addMessage.textContent = "Transaction added successfully!";
+      addMessage.style.color = "#22c55e";
+    }
 
-setTimeout(() => {
-  if (addMessage) addMessage.textContent = "";
-}, 2000);
-
-
+    setTimeout(() => {
+      if (addMessage) addMessage.textContent = "";
+    }, 2000);
 
     // Reset form
     addForm.reset();
@@ -316,7 +309,7 @@ setTimeout(() => {
     document.querySelector(".toggle-btn.expense").classList.add("active");
     document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
     document.querySelector(".cat[data-cat='Food']").classList.add("active");
-    
+
     // Navigate back to home
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -324,15 +317,19 @@ setTimeout(() => {
     document.getElementById("home").classList.add("active");
 
   } catch (err) {
-  if (addMessage) {
-    addMessage.textContent = "Failed to save transaction. Please try again.";
-    addMessage.style.color = "#ef4444";
+    if (addMessage) {
+      addMessage.textContent = "Failed to save transaction. Please try again.";
+      addMessage.style.color = "#ef4444";
+    }
+
+    console.error(err);
+
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save";
   }
-
-  console.error(err);
-}
-
 });
+
 
 
 /* ================= MONTH SELECTOR & HISTORY MODE ================= */
