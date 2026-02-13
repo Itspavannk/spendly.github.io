@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Spendly | By Pavan | Track. Save. Grow.</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="./manifest.json">
+
+</head>
+
+<body data-theme="dark">
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <h1>Spendly</h1>
+    <button id="themeToggle">🌙</button>
+  </header>
+
+  <main class="screens">
+
+    <!-- HOME (NO SCROLL) -->
+    <section class="screen active" id="home">
+
+      <div class="home-hero">
+        <p id="homeGreeting" class="home-greeting">Hi 👋</p>
+        <h1 class="home-balance">₹ 0</h1>
+        <span class="home-sub">Available Balance</span>
+
+        <button class="primary-btn" id="quickAddBtn">
+          + Add Transaction
+        </button>
+      </div>
+
+      <div class="home-section">
+        <h4>Recent</h4>
+        <ul class="transaction-list" id="recentList"></ul>
+      </div>
+
+    </section>
+
+    <!-- ADD -->
+    <section class="screen" id="add">
+      <h2>Add Amount</h2>
+      <div id="addMessage" style="margin-bottom:10px; font-size:14px;"></div>
+
+      <form class="add-form" id="addForm">
+
+        <input
+          type="number"
+          class="amount-input"
+          placeholder="₹ 0"
+          required
+        />
+
+        <div class="type-toggle">
+          <button type="button" class="toggle-btn expense active">Expense</button>
+          <button type="button" class="toggle-btn income">Income</button>
+        </div>
+
+        <div class="category-grid">
+          <button type="button" class="cat active" data-cat="Food">🍔</button>
+          <button type="button" class="cat" data-cat="Travel">🚕</button>
+          <button type="button" class="cat" data-cat="Shopping">🛒</button>
+          <button type="button" class="cat" data-cat="Salary">💼</button>
+          <button type="button" class="cat" data-cat="Bills">🧾</button>
+          <button type="button" class="cat" data-cat="Others">📦</button>
+        </div>
+
+        <div class="date-input-wrapper">
+          <input type="date" id="transactionDate" class="date-input" placeholder="Select a date"/>
+          <label class="date-label" for="transactionDate">Select Date</label>
+        </div>
+        
+        <input type="text" placeholder="Note (optional)" />
+
+        <button type="submit" class="save-btn sticky-save">Save</button>
+
+      </form>
+    </section>
+
+    <!-- HISTORY (WITH SCROLLABLE LIST) -->
+    <section class="screen" id="history">
+  
+      <div class="history-header">
+        <h3 class="section-title">History</h3>
+
+        <div class="history-summary">
+          <div class="summary-card income">
+            <span>Income</span>
+            <strong id="historyIncome">₹ 0</strong>
+          </div>
+
+          <div class="summary-card expense">
+            <span>Expense</span>
+            <strong id="historyExpense">₹ 0</strong>
+          </div>
+        </div>
+
+        <div class="history-controls">
+          <select id="monthSelect"></select>
+
+          <div class="history-mode">
+            <label>
+              <input type="radio" name="historyMode" value="monthly" checked />
+              Monthly
+            </label>
+            <label>
+              <input type="radio" name="historyMode" value="all" />
+              All Time
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ONLY THIS PART SCROLLS -->
+      <ul class="transaction-list history-scroll" id="historyList"></ul>
+
+    </section>
+
+    <!-- USER -->
+<section class="screen" id="user">
+  <h3 class="section-title">Profile</h3>
+
+  <!-- PROFILE HEADER -->
+  <div class="profile-header">
+ <div class="avatar" id="avatarContainer">
+  <img id="avatarImage" class="hidden" />
+  <span id="avatarInitial">P</span>
+  <input type="file" id="avatarInput" accept="image/*" hidden />
+</div>
+
+
+    <p class="greeting" id="userGreeting">Hi 👋</p>
+  </div>
+
+  <!-- GENERAL OPTIONS -->
+  <div class="profile-group">
+    <button id="editNameBtn" class="profile-btn">Edit Name</button>
+    <button id="shareAppBtn" class="profile-btn">Share App</button>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="profile-group danger-group">
+    <button id="clearAllBtn" class="profile-btn danger">Clear All Transactions</button>
+    <button id="resetAppBtn" class="profile-btn danger">Reset App</button>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about-card">
+    <h4>About Spendly</h4>
+    <p>Track income and expenses with a simple, offline-first experience.</p>
+
+    <div class="about-meta">
+      <span><strong>Created by:</strong> Pavan Naik</span><br>
+      <span><strong>Version:</strong> v1.0.0</span>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <!-- NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-target="home">🏠</button>
+    <button class="nav-btn" data-target="add">➕</button>
+    <button class="nav-btn" data-target="history">📜</button>
+    <button class="nav-btn" data-target="user">👤</button>
+  </nav>
+
+</div>
+
+<!-- NAME MODAL -->
+<div id="nameModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Welcome to Spendly 👋</h2>
+<div id="modalMessage" style="margin-bottom:10px; font-size:14px;"></div>
+
+    <input
+      type="text"
+      id="firstUserName"
+      placeholder="Enter your name"
+    />
+
+    <input
+      type="number"
+      id="openingBalance"
+      placeholder="Current balance"
+    />
+
+    <button id="startAppBtn" class="save-btn">Start</button>
+  </div>
+</div>
+
+<!-- RESET CONFIRM MODAL -->
+<div id="resetModal" class="reset-modal hidden">
+  <div class="reset-box">
+    <h3>Reset Application?</h3>
+    <p>
+      This will permanently delete all your transactions.
+      <br><br>
+      This action cannot be undone.
+    </p>
+
+    <div class="reset-actions">
+      <button id="cancelReset">Cancel</button>
+      <button id="confirmReset" class="danger">Delete Everything</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLEAR ALL MODAL -->
+<div id="clearModal" class="reset-modal hidden">
+  <div class="reset-box">
+    <h3>Clear All Transactions?</h3>
+    <p>
+      This will permanently delete all transactions.
+      <br><br>
+      This action cannot be undone.
+    </p>
+
+    <div class="reset-actions">
+      <button id="cancelClear">Cancel</button>
+      <button id="confirmClear" class="danger">Delete All</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/app.js"></script>
+</body>
+</html>

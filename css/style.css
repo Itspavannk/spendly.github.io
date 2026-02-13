@@ -148,8 +148,11 @@ body::before {
 .screen {
   height: 100%;
   display: none;
-  overflow: hidden;
+  overflow-y: auto;   /* allow vertical scroll */
+  padding-bottom: 90px;
+  padding: 20px; /* space for bottom nav */
 }
+
 
 .screen.active {
   display: block;
@@ -159,19 +162,6 @@ body::before {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 20px;
-}
-
-/* ================= HOME SCREEN (NO SCROLL) ================= */
-
-#home {
-  overflow: hidden;
-  padding: 0 20px;
-  height: 100%;
-}
-
-#home.active {
-  display: flex;
-  flex-direction: column;
 }
 
 /* ================= HOME HERO ================= */
@@ -828,70 +818,97 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* ================= USER ================= */
+/* PROFILE HEADER */
 
-#user {
-  padding: 20px;
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.user-card {
-  background: var(--card);
-  padding: 16px;
-  border-radius: 16px;
-  margin-bottom: 16px;
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
 }
 
-.greeting {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 12px;
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.about-card {
-  margin-top: 20px;
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  font-size: 14px;
+.hidden {
+  display: none;
 }
 
-.about-card h4 {
-  margin-bottom: 8px;
+
+/* BUTTON GROUPS */
+
+.profile-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
-.about-card p {
-  opacity: 0.85;
-  margin-bottom: 12px;
+.profile-btn {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #1f2937;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.about-meta span {
-  display: block;
-  opacity: 0.7;
-  font-size: 13px;
-  margin-bottom: 4px;
+.profile-btn:hover {
+  background: #273449;
 }
+
+.profile-btn.danger {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.danger-group {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 20px;
+}
+
 
 /* ================= NAVIGATION ================= */
 
 .bottom-nav {
   display: flex;
   justify-content: space-around;
-  padding: 16px;
+  padding: 7px;
   background: var(--bg);
   backdrop-filter: blur(40px);
   border-top: 1px solid var(--card-border);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 200;
+  border-radius: 5px;
 }
 
 .nav-btn {
   background: none;
   border: none;
-  font-size: 24px;
-  opacity: 0.4;
+  font-size: 18px;
+  opacity: 0.5;
   cursor: pointer;
-  padding: 12px 16px;
+  padding: 10px 10px;
   border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -904,7 +921,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 12px;
   background: var(--accent);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s;
 }
 
 .nav-btn.active {
@@ -1068,4 +1085,61 @@ button:active {
 
 .share-btn:active {
   transform: scale(0.97);
+}
+
+
+/* RESET MODAL */
+
+.reset-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+.reset-modal.hidden {
+  display: none;
+}
+
+.reset-box {
+  width: 350px;
+  padding: 30px;
+  background: #1f2937;
+  border-radius: 16px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+.reset-box h3 {
+  margin-bottom: 15px;
+}
+
+.reset-box p {
+  font-size: 14px;
+  color: #cbd5e1;
+  margin-bottom: 25px;
+}
+
+.reset-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.reset-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.reset-actions button.danger {
+  background: #ef4444;
+  color: white;
 }
