@@ -1,3 +1,10 @@
+const BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://spendly-github-io.onrender.com";
+
+
+
 let nameEditMode = false;
 const loginForm = document.getElementById("loginForm");
 
@@ -13,7 +20,8 @@ if (loginForm) {
     button.disabled = true;
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${BASE_URL}/api/auth/login`, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -66,7 +74,8 @@ if (registerForm) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch("http://localhost:5000/api/auth/register", {
+    const res = await fetch(`${BASE_URL}/api/auth/register`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +128,8 @@ async function getTransactions() {
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch("http://localhost:5000/api/expenses", {
+   const res = await fetch(`${BASE_URL}/api/expenses`, {
+
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -266,7 +276,8 @@ if (!amount || !category) {
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch("http://localhost:5000/api/expenses", {
+    const res = await fetch(`${BASE_URL}/api/expenses`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -534,7 +545,8 @@ async function deleteTx(id) {
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch(`http://localhost:5000/api/expenses/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/expenses/${id}`, {
+
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
@@ -599,7 +611,8 @@ async function loadUser() {
   modal.classList.add("hidden");
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/me", {
+    const res = await fetch(`${BASE_URL}/api/auth/me`, {
+
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -654,7 +667,8 @@ if (!name) {
   localStorage.setItem("spendly_username", name);
   const token = localStorage.getItem("token");
 
-await fetch("http://localhost:5000/api/auth/update-name", {
+await fetch(`${BASE_URL}/api/auth/update-name`, {
+
   method: "PUT",
   headers: {
     "Content-Type": "application/json",
@@ -680,7 +694,8 @@ await fetch("http://localhost:5000/api/auth/update-name", {
     };
 
     try {
-      await fetch("http://localhost:5000/api/expenses", {
+     await fetch(`${BASE_URL}/api/expenses`, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -739,7 +754,8 @@ confirmReset.addEventListener("click", async () => {
     const transactions = await getTransactions();
 
     for (const t of transactions) {
-      await fetch(`http://localhost:5000/api/expenses/${t._id}`, {
+     await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
+
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -748,7 +764,8 @@ confirmReset.addEventListener("click", async () => {
     }
 
         // Clear avatar in database
-await fetch("http://localhost:5000/api/auth/avatar", {
+await fetch(`${BASE_URL}/api/auth/avatar`, {
+
   method: "PUT",
   headers: {
     "Content-Type": "application/json",
@@ -829,7 +846,8 @@ confirmClear.addEventListener("click", async () => {
     const transactions = await getTransactions();
 
     for (const t of transactions) {
-      await fetch(`http://localhost:5000/api/expenses/${t._id}`, {
+     await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
+
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -924,7 +942,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = localStorage.getItem("token");
 
       try {
-        await fetch("http://localhost:5000/api/auth/avatar", {
+        await fetch(`${BASE_URL}/api/auth/avatar`, {
+
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
