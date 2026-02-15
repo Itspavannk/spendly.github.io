@@ -1,31 +1,22 @@
 # Spendly 💸
-https://itspavannk.github.io/spendly.github.io/
 
-Spendly is a modern **expense-tracking Progressive Web App (PWA)** built using **HTML, CSS, and JavaScript**.  
-It allows users to track income and expenses, view transaction history by month or all time, and manage finances through a clean, app-like interface.
+Spendly is a full-stack expense tracker that allows users to:
 
----
+- Add income and expenses
+- View monthly and all-time history
+- Delete transactions with confirmation
+- Reset the app safely
+- Use secure JWT authentication
 
-## 🚀 Features
+## Tech Stack
 
-- Add income and expense transactions
-- Monthly and all-time transaction history
-- Automatic balance calculation
-- Category-based transactions (Food, Travel, Shopping, etc.)
-- Date selection for each transaction
-- Recent transactions overview
-- LocalStorage data persistence
-- Installable as a **Progressive Web App (PWA)**
-- Works offline after installation
-- Mobile-first, app-like UI
+Frontend: HTML, CSS, JavaScript  
+Backend: Node.js, Express  
+Database: MongoDB Atlas  
+Deployment: GitHub Pages + Render
 
----
+Live: https://itspavannk.github.io/spendly.github.io/
 
-## 🖥️ Live Demo
-
-👉 **https://itspavannk.github.io/spendly.github.io/**
-
----
 
 ## 📱 Install as an App
 
@@ -40,15 +31,6 @@ It allows users to track income and expenses, view transaction history by month 
 3. Open the app in full-screen mode
 
 ---
-
-## 🛠️ Tech Stack
-
-- **HTML5**
-- **CSS3**
-- **Vanilla JavaScript**
-- **LocalStorage**
-- **Progressive Web App (PWA)**
-- **GitHub Pages**
-
+Made with ❤️ by Pavan Naik
 ---
 
