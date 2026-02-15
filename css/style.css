@@ -1143,3 +1143,102 @@ button:active {
   background: #ef4444;
   color: white;
 }
+
+.action-popup {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  padding: 50px 30px;
+  border-radius: 16px;
+  text-align: center;
+  min-width: 220px;
+
+  /* Theme adaptive */
+  background: var(--card-bg, #1f2937);
+  color: var(--text-color, #fff);
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: popupIn 0.2s ease;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top: 4px solid var(--accent-color, #3b82f6);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes popupIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* DELETE MODAL FIX */
+
+#deleteModal .modal-content {
+  background: var(--card-bg, #1f2937);
+  padding: 24px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  animation: modalFade 0.2s ease;
+}
+
+#deleteModal p {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-color, #fff);
+}
+
+#deleteModal .modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#cancelDelete {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #2d3748;
+  color: #fff;
+  font-size: 14px;
+}
+
+#confirmDelete {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #ff4d4d, #ff1e1e);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+#confirmDelete:hover {
+  opacity: 0.9;
+}
+
+@keyframes modalFade {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+

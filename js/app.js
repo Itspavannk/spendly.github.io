@@ -6,6 +6,41 @@ const BASE_URL =
     let transactions = [];
 
 
+/* ================= ROUTE PROTECTION ================= */
+
+const path = window.location.pathname;
+
+// If trying to access index without token
+if (path.includes("index.html") || path.endsWith("/")) {
+  if (!localStorage.getItem("token") &&
+      !path.includes("login.html") &&
+      !path.includes("register.html")) {
+    window.location.href = "login.html";
+  }
+}
+
+// If already logged in and trying to open login
+if (path.includes("login.html") && localStorage.getItem("token")) {
+  window.location.href = "index.html";
+}
+
+
+
+// MSG popup
+
+    function showPopup(message) {
+  const popup = document.getElementById("actionPopup");
+  const text = document.getElementById("popupText");
+  text.textContent = message;
+  popup.style.display = "flex";
+}
+
+function hidePopup() {
+  const popup = document.getElementById("actionPopup");
+  popup.style.display = "none";
+}
+
+
 
 let nameEditMode = false;
 const loginForm = document.getElementById("loginForm");
@@ -113,17 +148,6 @@ if (res.ok) {
 }
 
 
-
-if (window.location.pathname.includes("dashboard.html")) {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    window.location.href = "login.html";
-  }
-}
-
-
-
 /* ================= STORAGE HELPERS ================= */
 
 async function getTransactions(force = false) {
@@ -225,7 +249,9 @@ function formatDate(dateStr) {
 
 
 /* ================= ADD TRANSACTION FORM ================= */
-addForm.onsubmit = async function (e) {
+const addForm = document.getElementById("addForm");
+if (addForm) {
+  addForm.onsubmit = async function (e) {
   e.preventDefault();
 
 
@@ -278,6 +304,8 @@ addForm.onsubmit = async function (e) {
   const token = localStorage.getItem("token");
 
   try {
+    showPopup("Saving transaction...");
+
     const res = await fetch(`${BASE_URL}/api/expenses`, {
       method: "POST",
       headers: {
@@ -334,8 +362,11 @@ addForm.onsubmit = async function (e) {
     this.dataset.saving = "false";
     saveBtn.disabled = false;
     saveBtn.textContent = "Save";
+    hidePopup();
+
   }
 };
+}
 
 
 
@@ -539,7 +570,8 @@ function transactionItem(t) {
       </div>
       <div class="right">
         <strong>${sign} ₹${t.amount}</strong>
-        <button class="delete-btn" onclick="deleteTx('${id}')">🗑️</button>
+       <button class="delete-btn" onclick="confirmDeleteTx('${id}')">🗑️</button>
+
       </div>
     </li>
   `;
@@ -552,9 +584,10 @@ function transactionItem(t) {
 async function deleteTx(id) {
   const token = localStorage.getItem("token");
 
+  showPopup("Deleting transaction...");  
+
   try {
     const res = await fetch(`${BASE_URL}/api/expenses/${id}`, {
-
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
@@ -565,41 +598,42 @@ async function deleteTx(id) {
       throw new Error("Failed to delete transaction");
     }
 
-    // After deleting, refresh data from DB
+    // Remove locally
     transactions = transactions.filter(t => t._id !== id);
 
     if (transactions.length > 0) {
       selectedMonth = transactions[transactions.length - 1].date.slice(0, 7);
     }
 
-
     const addMessage = document.getElementById("addMessage");
-if (addMessage) {
-  addMessage.textContent = "Transaction deleted.";
-  addMessage.style.color = "#22c55e";
+    if (addMessage) {
+      addMessage.textContent = "Transaction deleted.";
+      addMessage.style.color = "#22c55e";
 
-  setTimeout(() => {
-    addMessage.textContent = "";
-  }, 1500);
-}
+      setTimeout(() => {
+        addMessage.textContent = "";
+      }, 1500);
+    }
 
-renderRecent();
-renderHistory();
-updateHome();
+    renderRecent();
+    renderHistory();
+    updateHome();
 
+  } catch (err) {
+    const addMessage = document.getElementById("addMessage");
 
- } catch (err) {
-  const addMessage = document.getElementById("addMessage");
+    if (addMessage) {
+      addMessage.textContent = "Failed to delete transaction. Please try again.";
+      addMessage.style.color = "#ef4444";
+    }
 
-  if (addMessage) {
-    addMessage.textContent = "Failed to delete transaction. Please try again.";
-    addMessage.style.color = "#ef4444";
+    console.error("Delete failed", err);
+
+  } finally {
+    hidePopup();   
   }
-
-  console.error("Delete failed", err);
 }
 
-}
 
 
 /* ================= USER NAME MANAGEMENT ================= */
@@ -759,12 +793,13 @@ cancelReset.addEventListener("click", () => {
 confirmReset.addEventListener("click", async () => {
   const token = localStorage.getItem("token");
 
+  showPopup("Resetting app...");  
+
   try {
-    const transactions = await getTransactions();
+    const txs = await getTransactions();
 
-    for (const t of transactions) {
-     await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
-
+    for (const t of txs) {
+      await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -772,28 +807,77 @@ confirmReset.addEventListener("click", async () => {
       });
     }
 
-        // Clear avatar in database
-await fetch(`${BASE_URL}/api/auth/avatar`, {
+    await fetch(`${BASE_URL}/api/auth/avatar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ avatar: null })
+    });
 
-  method: "PUT",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  },
-  body: JSON.stringify({ avatar: null })
-});
+      localStorage.removeItem("token");
+      localStorage.removeItem("spendly_username");
+      localStorage.removeItem("spendly_onboarded");
+
+      window.location.href = "login.html";
 
 
-    localStorage.removeItem("spendly_username");
-    localStorage.removeItem("spendly_onboarded");
-
-
-    location.reload();
 
   } catch (err) {
     console.error("Reset failed:", err);
+  } finally {
+    hidePopup();   
   }
 });
+
+
+const deleteModal = document.getElementById("deleteModal");
+const cancelDelete = document.getElementById("cancelDelete");
+const confirmDelete = document.getElementById("confirmDelete");
+
+let deleteId = null;
+
+// Open modal instead of deleting
+function confirmDeleteTx(id) {
+  const tx = transactions.find(t => (t._id || t.id) === id);
+  if (!tx) return;
+
+  deleteId = id;
+
+  const deleteMessage = document.getElementById("deleteMessage");
+
+  const formattedDate = new Date(tx.date).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+
+  deleteMessage.innerHTML = `
+    <strong>Delete ₹${tx.amount} (${tx.category})?</strong><br>
+    <small>${formattedDate}</small>
+  `;
+
+  deleteModal.classList.remove("hidden");
+}
+
+
+// Cancel button
+cancelDelete.addEventListener("click", () => {
+  deleteModal.classList.add("hidden");
+  deleteId = null;
+});
+
+// Confirm button
+confirmDelete.addEventListener("click", async () => {
+  deleteModal.classList.add("hidden");
+
+  if (deleteId) {
+    await deleteTx(deleteId);
+    deleteId = null;
+  }
+});
+
 
 
 
@@ -851,12 +935,13 @@ cancelClear.addEventListener("click", () => {
 confirmClear.addEventListener("click", async () => {
   const token = localStorage.getItem("token");
 
+  showPopup("Clearing all transactions...");  
+
   try {
-    const transactions = await getTransactions();
+    const txs = await getTransactions();
 
-    for (const t of transactions) {
-     await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
-
+    for (const t of txs) {
+      await fetch(`${BASE_URL}/api/expenses/${t._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -864,15 +949,12 @@ confirmClear.addEventListener("click", async () => {
       });
     }
 
-
-
     clearModal.classList.add("hidden");
 
     transactions = [];
     renderRecent();
     renderHistory();
     updateHome();
-
 
   } catch (err) {
     const addMessage = document.getElementById("addMessage");
@@ -883,8 +965,12 @@ confirmClear.addEventListener("click", async () => {
     }
 
     console.error("Clear failed:", err);
+
+  } finally {
+    hidePopup();  
   }
 });
+
 
 
 /* ================= REFRESH UI HELPER ================= */
