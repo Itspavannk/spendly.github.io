@@ -31,6 +31,16 @@ https://spendly-github-io.onrender.com
 
 ---
 
+## 📂 Project Structure
+
+Spendly/
+│
+├── backend/ # Express API server
+├── www/ # Frontend (web app)
+├── android/ # Capacitor Android project
+├── capacitor.config.json
+└── README.md
+
 👨‍💻Designed & Developed by
 
 **Pavan Naik**
