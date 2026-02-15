@@ -188,15 +188,27 @@ body {
     font-size: 32px;
   }
 
+.auth-stats {
+  justify-content: center;
+}
 
 
   .auth-right {
     width: 100%;
   }
 
+
+.auth-left p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
   .auth-container {
     width: 90%;
     padding: 40px 0;
+
+
   }
 
   #app-name{
