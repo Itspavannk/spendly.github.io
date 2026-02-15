@@ -1,36 +1,27 @@
-# Spendly 💸
+💰 Spendly – Expense Tracker
 
-Spendly is a full-stack expense tracker that allows users to:
+Spendly is a full-stack expense tracking app that helps users manage income and expenses securely.
 
-- Add income and expenses
-- View monthly and all-time history
-- Delete transactions with confirmation
-- Reset the app safely
-- Use secure JWT authentication
+🚀 Tech Stack
 
-## Tech Stack
+HTML, CSS, JavaScript
+Node.js, Express
+MongoDB
+JWT Authentication
+Capacitor (Android)
+Render (Backend Deployment)
 
-Frontend: HTML, CSS, JavaScript  
-Backend: Node.js, Express  
-Database: MongoDB Atlas  
-Deployment: GitHub Pages + Render
+🔐 Features
+User Registration & Login
+Add / Delete Expenses
+Forgot Password (Simple Reset)
+Account Reset
+Android App Support
 
-Live: https://itspavannk.github.io/spendly.github.io/
+🌐 Live Backend
+https://spendly-github-io.onrender.com
 
 
-## 📱 Install as an App
+👨‍💻Designed & Developed by
 
-### Desktop (Chrome / Edge)
-1. Open the live link
-2. Click the **Install** icon in the address bar
-3. Launch Spendly like a native app
-
-### Android
-1. Open the live link in Chrome
-2. Tap **⋮ → Add to Home screen**
-3. Open the app in full-screen mode
-
----
-Made with ❤️ by Pavan Naik
----
-
+**Pavan Naik**
