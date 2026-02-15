@@ -47,6 +47,11 @@ mongoose.connection.on("disconnected", () => {
   console.log("MongoDB disconnected");
 });
 
+app.get("/", (req, res) => {
+  res.send("Spendly Backend is Live 🚀");
+});
+
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
