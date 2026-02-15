@@ -1,0 +1,9 @@
+{
+  "appId": "com.pavannaik.spendly",
+  "appName": "Spendly",
+  "webDir": "www",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "http"
+  }
+}

@@ -122,6 +122,47 @@ router.put("/update-name", authMiddleware, async (req, res) => {
   }
 });
 
+// SIMPLE RESET PASSWORD
+router.put("/simple-reset", async (req, res) => {
+  try {
+    let { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    email = email.trim().toLowerCase();
+
+    console.log("Reset email received:", email);
+
+    const user = await User.findOne({
+      email: email
+    });
+
+    console.log("User found:", user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+
+  } catch (err) {
+    console.error("Reset error:", err);
+    res.status(500).json({ message: "Server error during password reset" });
+  }
+});
+
+
 
 
 
