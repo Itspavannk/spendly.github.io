@@ -1033,13 +1033,24 @@ async function refreshUI() {
 /* ================= INITIALIZATION ================= */
 
 async function init() {
-  await getTransactions();
-  await populateMonths();
-  updateHome();
-  renderRecent();
-  renderHistory();
-  loadUser();
+  try {
+    showPopup("☁️ Spendly server is waking up...\nPlease wait a few seconds");
+
+    await getTransactions();
+    await populateMonths();
+    updateHome();
+    renderRecent();
+    renderHistory();
+    await loadUser();
+
+  } catch (err) {
+    console.error("Initialization failed:", err);
+  } finally {
+    hidePopup();
+  }
 }
+
+
 
 // Run only on index page
 if (document.querySelector(".app")) {
