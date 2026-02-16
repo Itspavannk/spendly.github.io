@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
   <title>Spendly Login</title>
   <link rel="stylesheet" href="css/auth.css">
   <link rel="manifest" href="./manifest.json">
+
+  <!-- Remove tap highlight fix -->
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+      tap-highlight-color: transparent !important;
+      -webkit-touch-callout: none !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+    }
+    
+    input, textarea {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
+    
+    *:focus {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+  </style>
 
 </head>
 <body>
@@ -61,6 +84,28 @@
   </div>
 
 </div>
+
+<script>
+// Aggressive tap highlight removal
+document.addEventListener('DOMContentLoaded', function() {
+  // Apply to body
+  document.body.style.webkitTapHighlightColor = 'transparent';
+  document.body.style.webkitUserSelect = 'none';
+  
+  // Prevent default touch behavior
+  document.addEventListener('touchstart', function(e) {
+    if (e.target && e.target.style) {
+      e.target.style.webkitTapHighlightColor = 'transparent';
+    }
+  }, { passive: true });
+  
+  document.addEventListener('touchend', function(e) {
+    if (e.target && e.target.style) {
+      e.target.style.webkitTapHighlightColor = 'transparent';
+    }
+  }, { passive: true });
+});
+</script>
 
 <script src="js/app.js"></script>
 </body>

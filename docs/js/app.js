@@ -163,11 +163,7 @@ if (res.ok) {
 
 /* ================= STORAGE HELPERS ================= */
 
-async function getTransactions(force = false) {
-  if (transactions.length > 0 && !force) {
-    return transactions;
-  }
-
+async function getTransactions() {
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${BASE_URL}/api/expenses`, {
@@ -183,8 +179,6 @@ async function getTransactions(force = false) {
   transactions = await res.json();
   return transactions;
 }
-
-
 
 
 
@@ -1000,6 +994,7 @@ if (confirmClear && clearModal) {
 /* ================= REFRESH UI HELPER ================= */
 
 async function refreshUI() {
+   await getTransactions();  
   await populateMonths();
   updateHome();
   renderRecent();
@@ -1009,6 +1004,7 @@ async function refreshUI() {
 /* ================= INITIALIZATION ================= */
 
 async function init() {
+  await getTransactions();
   await populateMonths();
   updateHome();
   renderRecent();
@@ -1062,6 +1058,7 @@ if (toggleReset && resetPasswordInput) {
       resetPasswordInput.type === "password" ? "text" : "password";
     resetPasswordInput.type = type;
     toggleReset.textContent = type === "password" ? "👁" : "🙈";
+  
   });
 }
 
@@ -1151,3 +1148,17 @@ if (resetSimpleForm) {
 
   });
 }
+
+    // Manual Refresh Button
+document.addEventListener("click", async (e) => {
+  if (e.target.closest("#refreshBtn")) {
+    try {
+      showPopup("Refreshing...");
+      await refreshUI();
+    } catch (err) {
+      console.error("Refresh failed:", err);
+    } finally {
+      hidePopup();
+    }
+  }
+});
