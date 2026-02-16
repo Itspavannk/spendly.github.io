@@ -179,6 +179,11 @@
     <button id="resetAppBtn" class="profile-btn danger">Reset App</button>
   </div>
 
+  <button id="logoutBtn" class="danger-btn">
+  Logout
+</button>
+
+
   <!-- ABOUT -->
   <div class="about-card">
     <h4>About Spendly</h4>
@@ -302,6 +307,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { passive: true });
 });
 </script>
+
+<!-- LOGOUT CONFIRM MODAL -->
+<div id="logoutModal" class="reset-modal hidden">
+  <div class="reset-box">
+    <h3>Logout?</h3>
+    <p>
+      Are you sure you want to logout?
+    </p>
+
+    <div class="reset-actions">
+      <button id="cancelLogout">Cancel</button>
+      <button id="confirmLogout" class="danger">Logout</button>
+    </div>
+  </div>
+</div>
 
 <script src="js/app.js"></script>
 </body>

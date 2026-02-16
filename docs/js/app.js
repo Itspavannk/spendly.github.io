@@ -160,6 +160,35 @@ if (res.ok) {
   });
 }
 
+const logoutBtn = document.getElementById("logoutBtn");
+const logoutModal = document.getElementById("logoutModal");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+if (logoutBtn && logoutModal) {
+  logoutBtn.addEventListener("click", () => {
+    logoutModal.classList.remove("hidden");
+  });
+}
+
+if (cancelLogout && logoutModal) {
+  cancelLogout.addEventListener("click", () => {
+    logoutModal.classList.add("hidden");
+  });
+}
+
+if (confirmLogout && logoutModal) {
+  confirmLogout.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("spendly_username");
+    localStorage.removeItem("spendly_onboarded");
+    window.location.href = "login.html";
+  });
+}
+;
+
+
+
 
 /* ================= STORAGE HELPERS ================= */
 
