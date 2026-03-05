@@ -192,21 +192,33 @@ if (confirmLogout && logoutModal) {
 
 /* ================= STORAGE HELPERS ================= */
 
-async function getTransactions() {
+async function getTransactions(retries = 5) {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE_URL}/api/expenses`, {
-    headers: {
-      Authorization: `Bearer ${token}`
+  try {
+    const res = await fetch(`${BASE_URL}/api/expenses`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error("Server not ready");
+
+    transactions = await res.json();
+    return transactions;
+
+  } catch (err) {
+
+    if (retries > 0) {
+      console.log("Server waking up... retrying");
+
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      return getTransactions(retries - 1);
     }
-  });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch transactions");
+    throw err;
   }
-
-  transactions = await res.json();
-  return transactions;
 }
 
 
