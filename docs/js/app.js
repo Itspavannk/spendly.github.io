@@ -1,5 +1,5 @@
 const BASE_URL = "https://spendly-github-io.onrender.com";
-
+let appReady = false;
 
     let transactions = [];
 
@@ -1045,20 +1045,27 @@ async function refreshUI() {
 /* ================= INITIALIZATION ================= */
 
 async function init() {
-  try {
-    showPopup("☁️Your Spendly server is waking up ....\n Please wait a few seconds");
 
+  showPopup("☁️ Your Spendly server is waking up ...\nPlease wait a few seconds");
+
+  try {
+
+    await fetch(BASE_URL); // wake backend
     await getTransactions();
     await populateMonths();
+
     updateHome();
     renderRecent();
     renderHistory();
     await loadUser();
 
-  } catch (err) {
-    console.error("Initialization failed:", err);
-  } finally {
+    appReady = true; // app is now ready
+
     hidePopup();
+
+  } catch (err) {
+
+    console.error("Initialization failed:", err);
   }
 }
 
