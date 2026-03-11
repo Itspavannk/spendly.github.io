@@ -1046,7 +1046,7 @@ async function refreshUI() {
 
 async function init() {
   try {
-    showPopup("☁️ Spendly server is still waking up ....\n Please wait a few seconds");
+    showPopup("☁️Your Spendly server is waking up ....\n Please wait a few seconds");
 
     await getTransactions();
     await populateMonths();
