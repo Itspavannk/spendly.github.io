@@ -51,6 +51,10 @@ app.get("/", (req, res) => {
   res.send("Spendly Backend is Live 🚀");
 });
 
+app.get("/api/ping", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 
 // Routes
 app.use("/api/auth", authRoutes);

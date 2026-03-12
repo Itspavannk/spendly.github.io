@@ -1046,11 +1046,10 @@ async function refreshUI() {
 
 async function init() {
 
-  showPopup("☁️ Your Spendly server is waking up ...\nPlease wait a few seconds");
+  showPopup("☁️ Spendly server waking up...\nThis may take ~30 seconds");
 
   try {
 
-    await fetch(BASE_URL); // wake backend
     await getTransactions();
     await populateMonths();
 
@@ -1059,16 +1058,15 @@ async function init() {
     renderHistory();
     await loadUser();
 
-    appReady = true; // app is now ready
-
-    hidePopup();
-
   } catch (err) {
 
-    console.error("Initialization failed:", err);
+    console.error("Server may still be starting");
+
+  } finally {
+
+    hidePopup();
   }
 }
-
 
 
 // Run only on index page
