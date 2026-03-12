@@ -192,7 +192,7 @@ if (confirmLogout && logoutModal) {
 
 /* ================= STORAGE HELPERS ================= */
 
-async function getTransactions(retries = 5) {
+async function getTransactions(retries = 10) {
   const token = localStorage.getItem("token");
 
   try {
@@ -1046,9 +1046,12 @@ async function refreshUI() {
 
 async function init() {
 
-  showPopup("☁️ Spendly server waking up...\nThis may take ~30 seconds");
+  showPopup("☁️ Spendly server waking up...\nThis may take up to 30 seconds");
 
   try {
+
+    // wake server
+    await fetch(`${BASE_URL}/api/ping`);
 
     await getTransactions();
     await populateMonths();
@@ -1058,16 +1061,17 @@ async function init() {
     renderHistory();
     await loadUser();
 
+    appReady = true;
+
   } catch (err) {
 
-    console.error("Server may still be starting");
+    console.error("Initialization failed:", err);
 
   } finally {
 
-    hidePopup();
+    hidePopup();   // ALWAYS close popup
   }
 }
-
 
 // Run only on index page
 if (document.querySelector(".app")) {
